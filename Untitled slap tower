@@ -1,0 +1,142 @@
+local library = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/ShaddowScripts/Main/main/Library"))() 
+
+local Main = library:CreateWindow("Main","Crimson") 
+
+local tab = Main:CreateTab("Cheats") 
+
+local tab2 = Main:CreateTab("Misc")
+
+tab:CreateButton("Galaxy Slap", function()
+    game.ReplicatedStorage:WaitForChild("EquipSlapEvent"):FireServer("GalaxySlap")
+    print("clicked")
+end)
+
+tab:CreateButton("God slap", function()
+    game.ReplicatedStorage:WaitForChild("EquipSlapEvent"):FireServer("God's Hand")
+    print("clicked")
+end)
+
+tab:CreateButton("Error slap", function()
+    game.ReplicatedStorage:WaitForChild("EquipSlapEvent"):FireServer("ErrorSlap")
+    print("clicked")
+end)
+
+tab:CreateButton("Brick Slap", function()
+    game.ReplicatedStorage:WaitForChild("EquipSlapEvent"):FireServer("BrickSlap")
+    print("clicked")
+end)
+
+tab:CreateButton("Diamond Slap", function()
+    game.ReplicatedStorage:WaitForChild("EquipSlapEvent"):FireServer("DiamondSlap")
+    print("clicked")
+end)
+
+tab:CreateButton("Stun Slap", function()
+    game.ReplicatedStorage:WaitForChild("EquipSlapEvent"):FireServer("StunSlap")
+    print("clicked")
+end)
+
+tab:CreateButton("Swapper slap", function()
+    game.ReplicatedStorage:WaitForChild("EquipSlapEvent"):FireServer("SwapperSlap")
+    print("clicked")
+end)
+
+tab:CreateButton("Magnet Slap", function()
+    game.ReplicatedStorage:WaitForChild("EquipSlapEvent"):FireServer("MagnetSlap")
+    print("clicked")
+end)
+
+tab:CreateButton("Apple Slap", function()
+    game.ReplicatedStorage:WaitForChild("EquipSlapEvent"):FireServer("AppleSlap")
+    print("clicked")
+end)
+
+tab:CreateButton("PoisonSlap", function()
+    game.ReplicatedStorage:WaitForChild("EquipSlapEvent"):FireServer("PoisonSlap")
+    print("clicked")
+end)
+
+tab:CreateButton("StreakSlap", function()
+    game.ReplicatedStorage:WaitForChild("EquipSlapEvent"):FireServer("StreakSlap")
+    print("clicked")
+end)
+
+tab:CreateButton("Gold Slap", function()
+    game.ReplicatedStorage:WaitForChild("EquipSlapEvent"):FireServer("GoldSlap")
+    print("clicked")
+end)
+
+tab:CreateButton("BIGGGG Slap", function()
+    game.ReplicatedStorage:WaitForChild("EquipSlapEvent"):FireServer("BigSlap")
+    print("clicked")
+end)
+
+-- Replace the original Slap All button with this toggle checkbox:
+local slapAllTask
+
+tab:CreateCheckbox("Slap All", function(enabled)
+    local Players = game:GetService("Players")
+    local LocalPlayer = Players.LocalPlayer
+
+    local gloveNames = {
+        "BrickSlap", "GalaxySlap", "God's Hand", "SwapperSlap", "AppleSlap",
+        "BigSlap", "GoldSlap", "ErrorSlap", "DiamondSlap", "PoisonSlap", "StreakSlap", "DefaultSlap"
+    }
+
+    local slapDelay = 0.05
+
+    if enabled then
+        slapAllTask = task.spawn(function()
+            while true do
+                for _, player in ipairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer and player.Character then
+                        local char = player.Character
+                        local pos = char:FindFirstChild("HumanoidRootPart") and char.HumanoidRootPart.Position or Vector3.new(0,0,0)
+
+                        for _, gloveName in ipairs(gloveNames) do
+                            local glove = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild(gloveName)
+                            if glove then
+                                local event = glove:FindFirstChild("Event")
+                                if event then
+                                    event:FireServer("slash", char, pos)
+                                end
+                            end
+                        end
+                    end
+                end
+                task.wait(slapDelay)
+            end
+        end)
+        print("Slap All started")
+    else
+        if slapAllTask then
+            task.cancel(slapAllTask)
+            slapAllTask = nil
+            print("Slap All stopped")
+        end
+    end
+end)
+tab:CreateButton("Spam timestop",function()local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+
+local timeStopActive = ReplicatedStorage:WaitForChild("TimeStopActive")
+local player = Players.LocalPlayer
+local godHand = player.Character and player.Character:FindFirstChild("God's Hand")
+
+if not godHand then
+    player.CharacterAdded:Wait()
+    godHand = player.Character:WaitForChild("God's Hand")
+end
+
+local event = godHand:WaitForChild("Event")
+
+while true do
+    -- Force TimeStopActive to false to bypass cooldown/active check
+    timeStopActive.Value = false
+
+    -- Fire the timestop event
+    event:FireServer("timestop")
+
+    wait(0.1) -- Adjust spam speed here; lower = faster spam
+end
+ print("clicked") end)
